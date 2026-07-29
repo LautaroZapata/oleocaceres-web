@@ -1,27 +1,27 @@
-import { Header } from './components/Header/Header';
-import { ContentHome } from './components/Content/ContentHome';
-import { ContentSectionEmpresa } from './components/Content/ContentSectionEmpresa';
-import { ContentSectionTrabajos } from './components/Content/ContentSectionTrabajos';
-import { ContentSectionContacto } from "./components/Content/ContentSectionContacto";
+import { Header } from './components/Header'
+import { Hero } from './components/Hero'
+import { Trayectoria } from './components/Trayectoria'
+import { Servicios } from './components/Servicios'
+import { Capacidad } from './components/Capacidad'
+import { Clientes } from './components/Clientes'
+import { Contacto } from './components/Contacto'
+import { Footer } from './components/Footer'
 
 function App() {
   return (
     <>
       <Header />
-      <section id="inicio">
-        <ContentHome />
-      </section>
-      <section id="empresa">
-        <ContentSectionEmpresa />
-      </section>
-      <section id="trabajos">
-        <ContentSectionTrabajos />
-      </section>
-      <section id="contacto">
-        <ContentSectionContacto />
-      </section>
+      <main>
+        <Hero />
+        <Trayectoria />
+        <Servicios />
+        <Capacidad />
+        <Clientes />
+        <Contacto />
+      </main>
+      <Footer />
     </>
-  );
+  )
 }
 
-export default App;
+export default App
