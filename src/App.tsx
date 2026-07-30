@@ -1,8 +1,8 @@
+import { ScrollProgress } from './components/ScrollProgress'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
-import { Trayectoria } from './components/Trayectoria'
+import { Empresa } from './components/Empresa'
 import { Servicios } from './components/Servicios'
-import { Capacidad } from './components/Capacidad'
 import { Clientes } from './components/Clientes'
 import { Contacto } from './components/Contacto'
 import { Footer } from './components/Footer'
@@ -10,12 +10,12 @@ import { Footer } from './components/Footer'
 function App() {
   return (
     <>
+      <ScrollProgress />
       <Header />
       <main>
         <Hero />
-        <Trayectoria />
+        <Empresa />
         <Servicios />
-        <Capacidad />
         <Clientes />
         <Contacto />
       </main>

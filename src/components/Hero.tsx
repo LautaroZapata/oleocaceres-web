@@ -1,108 +1,74 @@
-import { useEffect, useRef } from 'react'
-import gsap from 'gsap'
+import { HERO_LOGOS } from '../data/site'
 
-const CLIENTES = [
-  { img: '/logoANCAP.png', alt: 'ANCAP' },
-  { img: '/ute.png', alt: 'UTE' },
-  { img: '/anp.png', alt: 'ANP' },
-  { img: '/logoArmadaNacional.png', alt: 'Armada Nacional' },
-  { img: '/logoIM.png', alt: 'Intendencia de Montevideo' },
-  { img: '/bomberos.png', alt: 'Bomberos' },
-  { img: '/logoicanelones.png', alt: 'Canelones' },
-  { img: '/logoiMaldonado.png', alt: 'Maldonado' },
-]
+/** Entrance stagger, in seconds, matching the design's cascade. */
+const rise = (delay: number) => ({ animationDelay: `${delay}s` })
 
 export function Hero() {
-  const containerRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const el = containerRef.current
-      if (!el) return
-
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-
-      const lines = el.querySelectorAll<HTMLElement>('.hero-line')
-      const fades = el.querySelectorAll<HTMLElement>('.hero-fade')
-      const logos = el.querySelectorAll<HTMLElement>('.hero-logo')
-
-      if (lines.length) tl.fromTo(lines, { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.15 })
-      if (fades.length) tl.fromTo(fades, { y: 25, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, stagger: 0.08 }, '-=0.3')
-      if (logos.length) tl.fromTo(logos, { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, stagger: 0.03 }, '-=0.1')
-    })
-
-    return () => ctx.revert()
-  }, [])
-
   return (
-    <section
-      id="inicio"
-      ref={containerRef}
-      className="relative min-h-dvh flex flex-col bg-surface overflow-hidden"
-    >
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-surface/60 via-surface/80 to-surface" />
-        <div className="absolute inset-0 bg-grid-pattern-sm" />
-        <img
-          src="/img006.jpg"
-          alt=""
-          className="h-full w-full object-cover opacity-25"
-          style={{ filter: 'grayscale(0.7) contrast(1.2)' }}
-        />
-        <div className="absolute top-[-20%] right-[-10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] rounded-full bg-hydra-400/5 blur-3xl" />
-        <div className="absolute bottom-[-10%] left-[-5%] w-[30vw] h-[30vw] max-w-[400px] max-h-[400px] rounded-full bg-hydra-400/3 blur-3xl" />
+    <section id="inicio" className="relative overflow-hidden bg-surface pt-28 sm:pt-32 lg:pt-42">
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-[linear-gradient(105deg,#0a0a0a_8%,rgba(10,10,10,0.86)_44%,rgba(10,10,10,0.55)_100%)]" />
+        <div className="bg-grid-hero absolute inset-0" />
+        <div className="absolute -top-[16%] -right-[8%] h-[760px] w-[760px] animate-drift rounded-full bg-[radial-gradient(circle,rgba(212,168,83,0.13)_0%,rgba(212,168,83,0)_66%)] blur-[24px]" />
+        <div className="absolute -bottom-[24%] -left-[10%] h-[520px] w-[520px] animate-drift-reverse rounded-full bg-[radial-gradient(circle,rgba(212,168,83,0.07)_0%,rgba(212,168,83,0)_70%)] blur-[20px]" />
       </div>
 
-      <div className="flex-1 flex items-center min-h-0">
-        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 w-full pt-28 sm:pt-32 pb-6 sm:pb-8 lg:pb-12">
-          <div className="max-w-4xl">
-            <span className="hero-fade inline-flex items-center gap-2 text-[11px] sm:text-xs font-medium uppercase tracking-[0.2em] text-hydra-400 mb-4 sm:mb-6">
-              <span className="w-6 h-px bg-hydra-400/60" />
-              Especialistas en oleohidráulica
-            </span>
+      <div className="relative z-1 mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-10">
+        <div className="max-w-[940px] pb-10 sm:pb-11">
+          <span className="oc-rise inline-flex items-center gap-3 text-[10.5px] font-medium uppercase tracking-[0.26em] text-hydra-400">
+            <span className="h-px w-[34px] bg-hydra-400/55" />
+            Especialistas en oleohidráulica
+          </span>
 
-            <h1 className="text-[clamp(2.5rem,8vw,7rem)] sm:text-6xl md:text-8xl lg:text-9xl font-bold leading-[0.95] tracking-tighter text-white">
-              <span className="hero-line block">OLEO</span>
-              <span className="hero-line block text-hydra-400">HIDRÁULICA</span>
-              <span className="hero-line block">CÁCERES</span>
-            </h1>
+          <h1 className="mt-6 font-display text-[clamp(2.6rem,11vw,7rem)] font-bold leading-[0.95] tracking-[-0.038em] text-white sm:mt-7 sm:text-[clamp(3rem,7vw,7rem)]">
+            <span className="oc-rise block" style={rise(0.06)}>OLEO</span>
+            <span className="oc-rise block text-hydra-300" style={rise(0.16)}>HIDRÁULICA</span>
+            <span className="oc-rise block" style={rise(0.26)}>CÁCERES</span>
+          </h1>
 
-            <p className="hero-fade mt-4 sm:mt-6 text-sm sm:text-base md:text-lg text-steel-400 max-w-xl leading-relaxed font-light">
-              Desde Montevideo, más de 20 años importando, fabricando y reparando
-              componentes hidráulicos al servicio de la industria nacional.
-            </p>
+          <p
+            className="oc-rise mt-7 max-w-[620px] text-base font-light leading-relaxed text-pretty text-steel-300 sm:text-lg"
+            style={rise(0.36)}
+          >
+            Desde Montevideo, más de 20 años importando, fabricando y reparando componentes
+            hidráulicos al servicio de la industria nacional.
+          </p>
 
-            <div className="hero-fade mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3">
-              <a
-                href="#trayectoria"
-                className="inline-flex items-center justify-center gap-2 bg-hydra-400 text-surface font-semibold px-6 py-[13px] sm:py-3 rounded-lg text-sm hover:bg-hydra-300 transition-all duration-300 min-h-[44px]"
-              >
-                Nuestra historia
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-              </a>
-              <a
-                href="#contacto"
-                className="inline-flex items-center justify-center gap-2 border border-surface-border text-steel-300 font-medium px-6 py-[13px] sm:py-3 rounded-lg text-sm hover:border-steel-600 hover:text-white transition-all duration-300 min-h-[44px]"
-              >
-                Contacto
-              </a>
-            </div>
+          <div
+            className="oc-rise mt-9 flex flex-col items-stretch gap-3.5 sm:flex-row sm:items-center"
+            style={rise(0.46)}
+          >
+            <a
+              href="#contacto"
+              className="inline-flex min-h-11 items-center justify-center gap-2.5 rounded-full bg-hydra-400 px-7 py-4 text-[14.5px] font-semibold text-surface shadow-[0_14px_34px_-14px_rgba(212,168,83,0.85)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-hydra-300 hover:shadow-[0_20px_42px_-14px_rgba(212,168,83,0.95)]"
+            >
+              Ponerse en contacto
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+            <a
+              href="#servicios"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/15 px-7 py-4 text-[14.5px] font-medium text-steel-100 transition-all duration-300 hover:border-hydra-400/60 hover:bg-hydra-400/[0.07] hover:text-white"
+            >
+              Ver servicios
+            </a>
           </div>
         </div>
       </div>
 
-      <div className="border-t border-surface-border bg-surface/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-4 sm:py-5">
-          <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-steel-600 mb-3">
-            Confían en nosotros
+      <div className="relative z-1 mt-6 border-t border-white/8 bg-surface/60 backdrop-blur-sm">
+        <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-5 py-5 sm:px-8 lg:flex-row lg:items-center lg:gap-9 lg:px-10">
+          <p className="text-[10px] font-medium uppercase tracking-[0.2em] whitespace-nowrap text-steel-600">
+            Trabajamos para
           </p>
-          <div className="flex flex-wrap items-center gap-x-5 sm:gap-x-6 gap-y-2 sm:gap-y-3">
-            {CLIENTES.map((cliente, i) => (
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 sm:gap-x-8">
+            {HERO_LOGOS.map((logo) => (
               <div
-                key={i}
-                className="hero-logo h-7 sm:h-8 w-10 sm:w-12 flex items-center justify-center opacity-30 hover:opacity-60 transition-opacity duration-300"
+                key={logo.alt}
+                className="flex h-[30px] w-13 items-center justify-center opacity-35 grayscale brightness-190 transition-all duration-400 hover:opacity-85 hover:grayscale-0 hover:brightness-100"
               >
-                <img src={cliente.img} alt={cliente.alt} className="max-h-full max-w-full object-contain" loading="lazy" />
+                <img src={logo.img} alt={logo.alt} className="max-h-full max-w-full object-contain" loading="lazy" />
               </div>
             ))}
           </div>

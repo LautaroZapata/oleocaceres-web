@@ -1,92 +1,54 @@
-import { useEffect, useRef } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
-
-const SERVICIOS = [
-  {
-    numero: '01',
-    titulo: 'Importación',
-    descripcion: 'Traemos al país componentes y repuestos hidráulicos de fabricantes internacionales. Gestionamos la cadena de suministro para que tu industria nunca se detenga.',
-    img: '/img005.jpg',
-  },
-  {
-    numero: '02',
-    titulo: 'Fabricación',
-    descripcion: 'Diseñamos y fabricamos componentes hidráulicos a medida. Desde piezas personalizadas hasta sistemas completos, con la precisión que exige la industria moderna.',
-    img: '/img004.jpg',
-  },
-  {
-    numero: '03',
-    titulo: 'Reparación',
-    descripcion: 'Diagnosticamos, reparamos y probamos cilindros y equipos hidráulicos de todo tipo y tamaño. Nuestro banco de pruebas garantiza resultados con estándares internacionales.',
-    img: '/img006.jpg',
-  },
-]
+import { Reveal } from './Reveal'
+import { SERVICIOS } from '../data/site'
 
 export function Servicios() {
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const el = sectionRef.current
-      if (!el) return
-
-      ScrollTrigger.create({
-        trigger: el,
-        start: 'top 80%',
-        onEnter: () => {
-          gsap.fromTo(el.querySelectorAll<HTMLElement>('.sv-header'), { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' })
-        },
-      })
-    })
-
-    return () => ctx.revert()
-  }, [])
-
   return (
-    <section id="servicios" ref={sectionRef} className="bg-surface py-20 sm:py-24 md:py-32 lg:py-40">
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
-        <div className="sv-header max-w-2xl">
-          <span className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-medium uppercase tracking-[0.2em] text-hydra-400 mb-4 sm:mb-5">
-            <span className="w-6 h-px bg-hydra-400/60" />
-            Qué hacemos
-          </span>
-          <h2 className="text-[clamp(2rem,6vw,4.5rem)] sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05] text-white">
-            Servicios
-          </h2>
-          <div className="w-14 h-0.5 bg-hydra-400 mt-5 sm:mt-6" />
-        </div>
+    <section id="servicios" className="bg-white py-20 sm:py-26 lg:py-33">
+      <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-10">
+        <Reveal className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+          <div className="max-w-[600px]">
+            <span className="inline-flex items-center gap-3 text-[10.5px] font-medium uppercase tracking-[0.26em] text-hydra-600">
+              <span className="h-px w-[34px] bg-hydra-600/45" />
+              Qué hacemos
+            </span>
+            <h2 className="mt-5 font-display text-[clamp(2.1rem,4vw,3.5rem)] font-bold leading-[1.07] tracking-[-0.032em] text-steel-900">
+              Tres frentes, un mismo <span className="text-hydra-700">estándar</span>
+            </h2>
+          </div>
+          <p className="max-w-[340px] text-[15.5px] font-light leading-[1.7] text-pretty text-steel-500">
+            Acompañamos a talleres y empresas de maquinaria en todo el ciclo de vida de sus equipos
+            hidráulicos.
+          </p>
+        </Reveal>
 
-        <div className="mt-12 sm:mt-14 md:mt-20 flex flex-col gap-12 md:gap-16 lg:gap-20">
-          {SERVICIOS.map((servicio, index) => (
-            <div
-              key={servicio.titulo}
-              className="group grid md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-center"
-            >
-              <div className={`${index % 2 === 1 ? 'md:order-2' : ''}`}>
-                <span className="text-[clamp(3rem,10vw,6rem)] sm:text-7xl md:text-8xl lg:text-9xl font-bold text-white/[0.03] select-none leading-none block overflow-hidden">
-                  {servicio.numero}
-                </span>
-                <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-white mt-0.5 sm:mt-1 leading-tight">
-                  {servicio.titulo}
-                </h3>
-                <div className="w-10 h-0.5 bg-hydra-400 mt-3 sm:mt-4 mb-3 sm:mb-4" />
-                <p className="text-sm sm:text-base text-steel-400 leading-relaxed max-w-md font-light">
-                  {servicio.descripcion}
-                </p>
-              </div>
-
-              <div className={`${index % 2 === 1 ? 'md:order-1' : ''} overflow-hidden rounded-xl bg-surface-light`}>
-                <img
-                  src={servicio.img}
-                  alt={servicio.titulo}
-                  className="w-full h-52 sm:h-56 md:h-80 object-cover transition-all duration-700 group-hover:scale-105"
-                  style={{ filter: 'grayscale(0.4)' }}
-                />
-              </div>
-            </div>
+        <div className="mt-12 grid gap-6.5 sm:mt-16 md:grid-cols-2 lg:grid-cols-3">
+          {SERVICIOS.map((servicio, i) => (
+            <Reveal key={servicio.numero} delay={i * 110} className="h-full">
+              <article className="group h-full overflow-hidden rounded-3xl border border-steel-900/10 bg-white shadow-[0_1px_2px_rgba(55,59,68,0.04)] transition-[transform,box-shadow,border-color] duration-550 ease-oc hover:-translate-y-2 hover:border-hydra-600/30 hover:shadow-[0_30px_56px_-26px_rgba(55,59,68,0.3)]">
+                <div className="h-56 overflow-hidden bg-steel-100">
+                  <img
+                    src={servicio.img}
+                    alt={servicio.titulo}
+                    className="h-full w-full object-cover transition-transform duration-1000 ease-oc group-hover:scale-107"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="px-7 pt-7 pb-8.5">
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono text-[11px] font-medium tracking-[0.14em] text-hydra-600">
+                      {servicio.numero}
+                    </span>
+                    <span className="h-px flex-1 bg-hydra-600/20" />
+                  </div>
+                  <h3 className="mt-4 font-display text-[25px] font-semibold leading-[1.15] tracking-[-0.025em] text-steel-900">
+                    {servicio.titulo}
+                  </h3>
+                  <p className="mt-3.5 text-[14.5px] font-light leading-[1.7] text-pretty text-steel-500">
+                    {servicio.descripcion}
+                  </p>
+                </div>
+              </article>
+            </Reveal>
           ))}
         </div>
       </div>
