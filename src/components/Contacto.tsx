@@ -15,8 +15,17 @@ const EMAILJS = {
   publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
 }
 
+/**
+ * Spam traps. EmailJS restricts by domain only on paid plans, so the public key
+ * in the bundle is usable from anywhere — these cut the automated share of that.
+ * A bot fills every field it finds and submits instantly; a person does neither.
+ */
+const HONEYPOT = 'empresa_web'
+const MIN_FILL_MS = 3000
+
 export function Contacto() {
   const formRef = useRef<HTMLFormElement>(null)
+  const mountedAt = useRef(Date.now())
   const [servicio, setServicio] = useState('')
   const [sent, setSent] = useState(false)
   const [error, setError] = useState('')
@@ -26,6 +35,13 @@ export function Contacto() {
     e.preventDefault()
     setError('')
     if (!formRef.current) return
+
+    const honeypotFilled = Boolean(new FormData(formRef.current).get(HONEYPOT))
+    if (honeypotFilled || Date.now() - mountedAt.current < MIN_FILL_MS) {
+      // Silent drop: the bot sees success, no request leaves the browser.
+      setSent(true)
+      return
+    }
 
     if (!servicio) {
       setError('Elegí qué necesitás para que podamos derivar tu consulta.')
@@ -71,6 +87,17 @@ export function Contacto() {
               onSubmit={handleSubmit}
               className="mt-10 flex flex-col gap-5 rounded-3xl border border-hydra-600/15 bg-hydra-50 px-6 py-8 sm:px-9"
             >
+              {/* Off-screen and out of the tab order: only bots ever reach it. */}
+              <div aria-hidden className="pointer-events-none absolute -left-[9999px] h-0 w-0 overflow-hidden">
+                <input
+                  type="text"
+                  name={HONEYPOT}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  defaultValue=""
+                />
+              </div>
+
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label htmlFor="nombre" className={LABEL}>Nombre</label>

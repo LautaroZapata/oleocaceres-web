@@ -37,6 +37,12 @@ El prefijo `VITE_` es obligatorio; sin él Vite no expone la variable al cliente
 
 En Vercel hay que cargarlas en **Settings → Environment Variables** (Production, Preview y Development). El `.env` local no se sube.
 
+### Anti-spam
+
+La restricción por dominio de EmailJS es de plan pago, así que la Public Key del bundle es usable desde cualquier lado. Como mitigación, `Contacto.tsx` tiene dos trampas: un campo honeypot fuera de pantalla y un mínimo de 3 segundos entre que carga el formulario y el envío. Si alguna salta, el envío se descarta en silencio sin llamar a la API.
+
+Esto frena bots automatizados, no a alguien que apunte al sitio a propósito. El `To Email` está fijo en la plantilla de EmailJS, así que la key no sirve para mandar mails a terceros — el peor caso es que consuman la cuota mensual. Si eso pasa: regenerar la Public Key en EmailJS → Account → General y actualizarla acá y en Vercel.
+
 ## Estructura
 
 ```
