@@ -45,7 +45,7 @@ export function Empresa() {
           <Reveal delay={140}>
             <div className="overflow-hidden rounded-3xl shadow-[0_30px_60px_-30px_rgba(55,59,68,0.34)]">
               <img
-                src="/img007.jpg"
+                src="/img007.webp"
                 alt="Planta de Oleohidráulica Cáceres en Montevideo"
                 className="block h-[240px] w-full object-cover sm:h-[300px]"
                 loading="lazy"

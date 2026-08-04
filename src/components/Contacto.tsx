@@ -8,6 +8,13 @@ const FIELD =
 
 const LABEL = 'mb-2 block text-[11px] font-medium uppercase tracking-[0.14em] text-steel-500'
 
+/** Set in `.env` (see `.env.example`) and in Vercel → Environment Variables. */
+const EMAILJS = {
+  serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+  templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+}
+
 export function Contacto() {
   const formRef = useRef<HTMLFormElement>(null)
   const [servicio, setServicio] = useState('')
@@ -19,11 +26,24 @@ export function Contacto() {
     e.preventDefault()
     setError('')
     if (!formRef.current) return
+
+    if (!servicio) {
+      setError('Elegí qué necesitás para que podamos derivar tu consulta.')
+      return
+    }
+
+    if (!EMAILJS.serviceId || !EMAILJS.templateId || !EMAILJS.publicKey) {
+      console.error('Faltan las variables VITE_EMAILJS_* — la consulta no se envió.')
+      setError(`No pudimos enviar la consulta. Escribinos a ${CONTACTO.email} o llamanos al ${CONTACTO.telefono}.`)
+      return
+    }
+
     setLoading(true)
     try {
-      await emailjs.sendForm('TU_SERVICE_ID', 'TU_TEMPLATE_ID', formRef.current, 'TU_PUBLIC_KEY')
+      await emailjs.sendForm(EMAILJS.serviceId, EMAILJS.templateId, formRef.current, EMAILJS.publicKey)
       setSent(true)
-    } catch {
+    } catch (err) {
+      console.error('EmailJS sendForm falló:', err)
       setError('Hubo un error al enviar la consulta. Intentalo de nuevo.')
     } finally {
       setLoading(false)
@@ -54,11 +74,11 @@ export function Contacto() {
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label htmlFor="nombre" className={LABEL}>Nombre</label>
-                  <input id="nombre" name="user_name" type="text" required placeholder="Tu nombre" className={FIELD} />
+                  <input id="nombre" name="name" type="text" required placeholder="Tu nombre" className={FIELD} />
                 </div>
                 <div>
                   <label htmlFor="email" className={LABEL}>Email</label>
-                  <input id="email" name="user_email" type="email" required placeholder="tu@email.com" className={FIELD} />
+                  <input id="email" name="email" type="email" required placeholder="tu@email.com" className={FIELD} />
                 </div>
               </div>
 
@@ -72,7 +92,10 @@ export function Contacto() {
                         key={opcion}
                         type="button"
                         aria-pressed={activo}
-                        onClick={() => setServicio(activo ? '' : opcion)}
+                        onClick={() => {
+                          setServicio(activo ? '' : opcion)
+                          setError('')
+                        }}
                         className={`min-h-11 flex-1 rounded-xl border px-2.5 py-3 text-[13.5px] font-medium transition-all duration-300 ${
                           activo
                             ? 'border-hydra-400 bg-hydra-400/15 text-hydra-700'
@@ -177,20 +200,17 @@ export function Contacto() {
                 <div className="flex items-start gap-3.5">
                   <span className="flex h-9.5 w-9.5 shrink-0 items-center justify-center rounded-xl bg-hydra-400/15 text-hydra-300">
                     <svg className="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
-                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                      <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
-                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                      <rect x="3" y="5" width="18" height="14" rx="2" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.5 6.5l8.5 6 8.5-6" />
                     </svg>
                   </span>
                   <div>
-                    <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-steel-400">Redes</p>
+                    <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-steel-400">Email</p>
                     <a
-                      href={CONTACTO.instagramHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-1 inline-block text-[15px] font-medium text-hydra-300 transition-colors hover:text-hydra-200"
+                      href={CONTACTO.emailHref}
+                      className="mt-1 inline-block text-[15px] font-medium text-white transition-colors hover:text-hydra-300"
                     >
-                      {CONTACTO.instagram}
+                      {CONTACTO.email}
                     </a>
                   </div>
                 </div>

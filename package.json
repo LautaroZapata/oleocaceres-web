@@ -12,8 +12,6 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@tailwindcss/vite": "^4.1.12",
-    "framer-motion": "^12.23.12",
-    "gsap": "^3.12.7",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tailwindcss": "^4.1.12"
@@ -31,5 +29,8 @@
     "typescript-eslint": "^8.35.1",
     "vite": "^7.0.4"
   },
-  "packageManager": "pnpm@10.34.1"
+  "packageManager": "pnpm@10.34.1",
+  "pnpm": {
+    "onlyBuiltDependencies": ["@swc/core", "esbuild"]
+  }
 }
