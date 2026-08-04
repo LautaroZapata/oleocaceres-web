@@ -59,7 +59,12 @@ export function Contacto() {
       await emailjs.sendForm(EMAILJS.serviceId, EMAILJS.templateId, formRef.current, EMAILJS.publicKey)
       setSent(true)
     } catch (err) {
-      console.error('EmailJS sendForm falló:', err)
+      // EmailJS rechaza con { status, text }; el motivo real está en `text`.
+      const motivo =
+        err && typeof err === 'object' && 'text' in err
+          ? `${(err as { status?: number }).status ?? ''} ${(err as { text?: string }).text ?? ''}`.trim()
+          : String(err)
+      console.error('EmailJS sendForm falló →', motivo)
       setError('Hubo un error al enviar la consulta. Intentalo de nuevo.')
     } finally {
       setLoading(false)
