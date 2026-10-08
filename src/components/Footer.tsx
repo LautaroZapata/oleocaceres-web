@@ -56,6 +56,15 @@ export function Footer() {
           <p className="text-center text-xs font-light text-steel-600">
             © {new Date().getFullYear()} OLEOHIDRÁULICA CÁCERES. Todos los derechos reservados.
           </p>
+          <p className="mt-2 text-center text-xs font-light text-steel-600">
+            Sitio por{' '}
+            <a
+              href="https://www.kalabs.dev"
+              className="transition-colors duration-300 hover:text-hydra-300"
+            >
+              Kalabs
+            </a>
+          </p>
         </div>
       </div>
     </footer>
